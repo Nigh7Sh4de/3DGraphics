@@ -1,0 +1,34 @@
+ This directory contains teachers'version of some renderables.
+ In order not to mix things with your own renderables, our classes are
+ all defined is a specific namespace "teachers".
+ (if you did't know what a namespace is, now you will)
+
+
+1. add this teachers directory in your own project root
+
+2. make sure you compile these files files, by modifying the CMakeList path
+   for headers and sources files:
+ file(
+    GLOB_RECURSE
+    HEADER_FILES
+    include/*.hpp teachers/*.hpp
+    )
+ file(
+    GLOB_RECURSE
+    SOURCE_FILES
+    src/*.cpp teachers/*.cpp
+    )
+
+3. from build: cmake .. && make
+
+4. you can now use our renderable and yours simultaneously :
+
+#include <../include/CubeRenderable.hpp>     // yours
+#include <../teachers/CubeRenderable.hpp>    // not yours
+
+// yours
+CubeRenderablePtr cube = std::make_shared<CubeRenderable>(flatShader);
+// not yours (there is not typedef, use the shared_ptr directly)
+std::shared_ptr<teachers::CubeRenderable> teachersCube = std::make_shared<teachers::CubeRenderable>(flatShader);
+
+// Now use both Renderable like every other ones...

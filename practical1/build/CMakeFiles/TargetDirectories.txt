@@ -1,0 +1,1 @@
+/user/9/medveckj/graphics/practical1/build/CMakeFiles/main.dir

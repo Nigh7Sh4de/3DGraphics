@@ -1,0 +1,5 @@
+/user/9/medveckj/graphics/practical1/extlib/sfml-2.3.2/build/src/SFML/Audio/CMakeFiles/sfml-audio.dir
+/user/9/medveckj/graphics/practical1/extlib/sfml-2.3.2/build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir
+/user/9/medveckj/graphics/practical1/extlib/sfml-2.3.2/build/src/SFML/Network/CMakeFiles/sfml-network.dir
+/user/9/medveckj/graphics/practical1/extlib/sfml-2.3.2/build/src/SFML/System/CMakeFiles/sfml-system.dir
+/user/9/medveckj/graphics/practical1/extlib/sfml-2.3.2/build/src/SFML/Window/CMakeFiles/sfml-window.dir

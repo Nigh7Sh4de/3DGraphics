@@ -1,0 +1,2 @@
+/user/9/medveckj/graphics/practical1/extlib/freetype-2.5.5/build/CMakeFiles/dist.dir
+/user/9/medveckj/graphics/practical1/extlib/freetype-2.5.5/build/CMakeFiles/freetype.dir
