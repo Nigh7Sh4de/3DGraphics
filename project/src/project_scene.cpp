@@ -1,5 +1,6 @@
 #include "../include/Viewer.hpp"
 #include "../include/FrameRenderable.hpp"
+#include "../teachers/MeshRenderable.hpp"
 
 #include "../include/dynamics/DynamicSystem.hpp"
 #include "../include/dynamics/DampingForceField.hpp"
@@ -17,9 +18,11 @@
 #include "../include/dynamics_rendering/QuadRenderable.hpp"
 
 #include "../include/dynamics_rendering/PuckRenderable.hpp"
+#include "../include/dynamics_rendering/TerrainRenderable.hpp"
 #include "../include/SphereRenderable.hpp"
 #include "../include/texturing/TexturedPlaneRenderable.hpp"
 
+void project_terrain(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_puck(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
@@ -60,6 +63,7 @@ void initialize_project_scene(Viewer &viewer)
 
     //Populate the dynamic system with particles, forcefields
     //and create renderables associated to them for visualization.
+    project_terrain(viewer, system, systemRenderable, flatShader);
     project_lake(viewer, system, systemRenderable, flatShader);
     project_snowman(viewer, system, systemRenderable, flatShader);
     project_puck(viewer, system, systemRenderable, flatShader);
@@ -72,6 +76,44 @@ void initialize_project_scene(Viewer &viewer)
 
     //Finally, run the animation
     viewer.startAnimation();
+}
+
+// void project_terrain(Viewer &viewer, ShaderProgramPtr &shader) {
+//   std::shared_ptr<teachers::MeshRenderable> terrainMesh
+//       = std::make_shared<teachers::MeshRenderable>(shader, "../meshes/suzanne.obj");
+//   terrainMesh->setModelMatrix( glm::translate(glm::mat4(1.0), glm::vec3(0.0, 0.0, -3.0)));
+//   viewer.addRenderable(terrainMesh);
+// }
+
+void project_terrain(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
+{
+    TerrainRenderablePtr terrain = std::make_shared<TerrainRenderable>(shader);
+
+
+    HierarchicalRenderable::addChild(systemRenderable, terrain);
+
+
+    // GLfloat vertices[] = {
+    //   -10, -10, 0,
+    //   0, -10, 0,
+    //   0, 0, 0,
+    //   -10, 0, 0
+    //   // ,
+    //   // -1, 0, 0,
+    //   // 0, -1, 0
+    // };
+    //
+    // glEnableClientState(GL_VERTEX_ARRAY);
+    // glVertexPointer(4, GL_FLOAT, 0, vertices);
+    // glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    // glDisableClientState(GL_VERTEX_ARRAY);
+
+    // unsigned int terrain_pBuffer;
+    //
+    // glGenBuffers(1, &terrain_pBuffer);
+    // glBindBuffer(GL_ARRAY_BUFFER, terrain_pBuffer);
+    // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) & sizeof(int), vertices, GL_STATIC_DRAW);
+    // glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
