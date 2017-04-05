@@ -18,10 +18,12 @@ private:
     void do_draw();
     void do_animate(float time);
 
-    float m_positions[9];
+    float m_positions[111];
+    float m_normals[111];
+    float m_colors[148];
     // std::vector<glm::vec3> m_positions;
-    std::vector<glm::vec4> m_colors;
-    std::vector<glm::vec3> m_normals;
+    // std::vector<glm::vec4> m_colors;
+    // std::vector<glm::vec3> m_normals;
 
     unsigned int m_pBuffer;
     unsigned int m_cBuffer;
