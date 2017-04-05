@@ -28,12 +28,7 @@ void PuckRenderable::do_draw()
 
 void PuckRenderable::do_animate(float time)
 {
-    float currentTime = (int)time % 5;
-
-    if (currentTime < animTime)
-    {
+    if (time < 2) {
         m_particle->restart();
     }
-
-    animTime = currentTime;
 }

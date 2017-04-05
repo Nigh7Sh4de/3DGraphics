@@ -16,22 +16,37 @@
 #include "../include/dynamics_rendering/ControlledForceFieldRenderable.hpp"
 #include "../include/dynamics_rendering/QuadRenderable.hpp"
 
-#include "../include/dynamics_rendering/PuckRenderable.hpp"
 #include "../include/SphereRenderable.hpp"
+#include "../include/Skybox.hpp"
+#include "../include/dynamics_rendering/PuckRenderable.hpp"
+#include "../teachers/CylinderRenderable.hpp"
 #include "../include/texturing/TexturedPlaneRenderable.hpp"
+#include "../include/keyframes/KeyframedCylinderRenderable.hpp"
+#include "../include/keyframes/GeometricTransformation.hpp"
 
+void project_skybox(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
+void project_hockey_stick(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_puck(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_spring_gate(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 
 void initialize_project_scene(Viewer &viewer)
 {
-    //Set up a shader and add a 3D frame.
+    //Shaders
     ShaderProgramPtr flatShader =
         std::make_shared<ShaderProgram>("../shaders/flatVertex.glsl",
                                         "../shaders/flatFragment.glsl");
+    ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>("../shaders/phongVertex.glsl",
+                                                                   "../shaders/phongFragment.glsl");
+    ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl",
+                                                                 "../shaders/textureFragment.glsl");
+    ShaderProgramPtr skyboxShader = std::make_shared<ShaderProgram>("../shaders/skyboxVertex.glsl",
+                                                                 "../shaders/skyboxFragment.glsl");
+    viewer.addShaderProgram(skyboxShader);
     viewer.addShaderProgram(flatShader);
+    viewer.addShaderProgram(phongShader);
+    viewer.addShaderProgram(texShader);
 
     FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
     viewer.addRenderable(frame);
@@ -50,17 +65,20 @@ void initialize_project_scene(Viewer &viewer)
 
     //Position the camera
     viewer.getCamera().setViewMatrix(
-        glm::lookAt(glm::vec3(0, 2, 2), glm::vec3(0, 0, 0), glm::vec3(0, 0, 1)));
+        glm::lookAt(glm::vec3(0, -20, 20), glm::vec3(0, 0, 0), glm::vec3(0, -1, 0)));
 
-    //Define a directional light for the whole scene
-    glm::vec3 d_direction = glm::normalize(glm::vec3(0.0,0.0,-1.0));
-    glm::vec3 d_ambient(1.0,1.0,1.0), d_diffuse(1.0,1.0,0.975), d_specular(1.0,1.0,1.0);
-    DirectionalLightPtr directionalLight = std::make_shared<DirectionalLight>(d_direction, d_ambient, d_diffuse, d_specular);
+    // Define a directional light for the whole scene
+    glm::vec3 lightDirection = glm::normalize(glm::vec3(0.0, 1.0, 0.0));
+    glm::vec3 ghostWhite(248.0 / 255, 248.0 / 255, 1.0);
+    DirectionalLightPtr directionalLight =
+        std::make_shared<DirectionalLight>(lightDirection, ghostWhite, ghostWhite, ghostWhite);
     viewer.setDirectionalLight(directionalLight);
 
     //Populate the dynamic system with particles, forcefields
     //and create renderables associated to them for visualization.
-    project_lake(viewer, system, systemRenderable, flatShader);
+    project_skybox(viewer, system, systemRenderable, skyboxShader);
+    project_lake(viewer, system, systemRenderable, texShader);
+    project_hockey_stick(viewer, system, systemRenderable, phongShader);
     project_snowman(viewer, system, systemRenderable, flatShader);
     project_puck(viewer, system, systemRenderable, flatShader);
     project_spring_gate(viewer, system, systemRenderable, flatShader);
@@ -70,8 +88,17 @@ void initialize_project_scene(Viewer &viewer)
     ConstantForceFieldPtr gravityForceField = std::make_shared<ConstantForceField>(system->getParticles(), glm::vec3{0, 0, -10});
     system->addForceField(gravityForceField);
 
+    // rotate the whole scene so its aligned with skybox
+    systemRenderable->setParentTransform(glm::rotate(glm::mat4(1.0), (float)(M_PI / 2.0), glm::vec3(1.0, 0.0, 0.0)));
+
     //Finally, run the animation
     viewer.startAnimation();
+}
+
+void project_skybox(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
+{
+    HierarchicalRenderablePtr skybox = std::make_shared<Skybox>(shader);
+    viewer.addRenderable(skybox);
 }
 
 void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
@@ -93,24 +120,23 @@ void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRendera
     system->addPlaneObstacle(plane);
 
     //Create a plane renderable to display the obstacle
-    ShaderProgramPtr texShader
-        = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl",
-                                          "../shaders/textureFragment.glsl");
-    viewer.addShaderProgram(texShader);
-
     //Textured plane
     std::string filename = "../textures/ice_lake.jpg";
-    TexturedPlaneRenderablePtr texPlane = std::make_shared<TexturedPlaneRenderable>(texShader, filename);
-    texPlane->setParentTransform(glm::scale(glm::mat4(1.0), glm::vec3(10.0,10.0,10.0)));
+    TexturedPlaneRenderablePtr texPlane = std::make_shared<TexturedPlaneRenderable>(shader, filename);
+    texPlane->setParentTransform(glm::scale(glm::mat4(1.0), glm::vec3(40.0, 30.0, 30.0)));
     texPlane->setMaterial(Material::White());
     HierarchicalRenderable::addChild(systemRenderable, texPlane);
 }
 
 void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
 {
+    // snowman
     SphereRenderablePtr bottomBall = std::make_shared<SphereRenderable>(shader, glm::vec4(0.9), 20, 20);
     SphereRenderablePtr middleBall = std::make_shared<SphereRenderable>(shader, glm::vec4(0.9), 20, 20);
     SphereRenderablePtr topBall = std::make_shared<SphereRenderable>(shader, glm::vec4(0.9), 20, 20);
+    SphereRenderablePtr leftEye = std::make_shared<SphereRenderable>(shader, glm::vec4(0.0), 20, 20);
+    SphereRenderablePtr rightEye = std::make_shared<SphereRenderable>(shader, glm::vec4(0.0), 20, 20);
+    std::shared_ptr<teachers::CylinderRenderable> nose = std::make_shared<teachers::CylinderRenderable>(shader, true, 30, glm::vec4(1.0, 0.0, 0.0, 0.0));
 
     bottomBall->setLocalTransform(
         glm::scale(glm::mat4(1.0), glm::vec3(3, 3, 3)) *
@@ -121,25 +147,62 @@ void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRend
         glm::scale(glm::mat4(1.0), glm::vec3(2, 2, 2)) *
         middleBall->getModelMatrix());
 
-    topBall->setLocalTransform(
-        glm::translate(glm::mat4(1.0), glm::vec3(0, 0, 5)) *
-        topBall->getModelMatrix());
+    topBall->setParentTransform(
+        glm::translate(glm::mat4(1.0), glm::vec3(0, 0, 5)));
+
+    leftEye->setLocalTransform(
+        glm::translate(glm::mat4(1.0), glm::vec3(0.75, 0.5, 0.5)) *
+        glm::scale(glm::mat4(1.0), glm::vec3(0.15, 0.15, 0.15)) *
+        leftEye->getModelMatrix());
+
+    rightEye->setLocalTransform(
+        glm::translate(glm::mat4(1.0), glm::vec3(0.75, -0.5, 0.5)) *
+        glm::scale(glm::mat4(1.0), glm::vec3(0.15, 0.15, 0.15)) *
+        rightEye->getModelMatrix());
+
+    nose->setLocalTransform(
+        glm::translate(glm::mat4(1.0), glm::vec3(0.75, 0, 0.25)) *
+        glm::rotate(glm::mat4(1.0), (float)(M_PI / 2.0), glm::vec3(0, 1, 0)) *
+        glm::scale(glm::mat4(1.0), glm::vec3(0.15, 0.15, 1)) *
+        nose->getModelMatrix());
 
     bottomBall->setParentTransform(
-        glm::translate(glm::mat4(1.0), glm::vec3(-5, 0, 3)));
+        glm::translate(glm::mat4(1.0), glm::vec3(-15, 0, 3)));
 
-    HierarchicalRenderable::addChild(bottomBall, middleBall);
+    HierarchicalRenderable::addChild(topBall, leftEye);
+    HierarchicalRenderable::addChild(topBall, rightEye);
+    HierarchicalRenderable::addChild(topBall, nose);
     HierarchicalRenderable::addChild(bottomBall, topBall);
+    HierarchicalRenderable::addChild(bottomBall, middleBall);
     HierarchicalRenderable::addChild(systemRenderable, bottomBall);
+}
+
+void project_hockey_stick(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
+{
+    // hockey stick
+    auto stick = std::make_shared<KeyframedCylinderRenderable>(shader, Material::Bronze());
+    stick->setLocalTransform(GeometricTransformation(glm::vec3{0.0, 0.0, 0.0}, glm::quat(glm::vec3(0.0, 0.0, 0.0)), glm::vec3{0.1, 0.25, 5.0}).toMatrix());
+
+    stick->addParentTransformKeyframe(0.0, GeometricTransformation(glm::vec3{-14.0, -2.25, 5.0}, glm::quat(glm::vec3(0.3, 5, 0.0))));
+    stick->addParentTransformKeyframe(1.5, GeometricTransformation(glm::vec3{-14.0, -2.25, 5.0}, glm::quat(glm::vec3(0.3, 5, 0.0))));
+    stick->addParentTransformKeyframe(2, GeometricTransformation(glm::vec3{-14.0, -2.25, 5.0}, glm::quat(glm::vec3(0.3, 2.7, 0.0))));
+
+    // stick leg
+    auto stick_leg = std::make_shared<KeyframedCylinderRenderable>(shader, Material::Bronze());
+
+    stick_leg->addParentTransformKeyframe(0.0, GeometricTransformation(glm::vec3{-0.5, -0.8, 5.0}, glm::quat(glm::vec3(0, 1.5, 1)), glm::vec3{0.25, 0.1, 1.0}));
+
+    HierarchicalRenderable::addChild(stick, stick_leg);
+    HierarchicalRenderable::addChild(systemRenderable, stick);
 }
 
 void project_puck(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
 {
     // puck particle
-    glm::vec3 px = glm::vec3(0.5, 0.0, 3.0);
-    glm::vec3 pv = glm::vec3(5.0, 0.0, 0.0);
-    float pr = 0.4;
-    float pm = 300.0;
+    glm::vec3 px = glm::vec3(-12.5, -4, 0.0);
+    glm::vec3 pv = glm::vec3(15.0, 1.5, 7.5);
+    float pr = 0.5;
+    float pm = 100.0;
     ParticlePtr puckParticle = std::make_shared<Particle>(px, pv, pm, pr);
     system->addParticle(puckParticle);
 
@@ -156,7 +219,7 @@ void project_spring_gate(Viewer &viewer, DynamicSystemPtr &system, DynamicSystem
 
     //Create particles on a squared uniform grid starting at origin
     std::vector<ParticlePtr> particles;
-    glm::vec3 origin(5, -2.5, 0.0), displacement(0.0, 0.0, 0.0);
+    glm::vec3 origin(15, -2.5, 0.0), displacement(0.0, 0.0, 0.0);
     int particlePerLine = 11;
     float gridWidth = 4.0, gridHeight = 4.0;
     float ystep = gridWidth / (float)(particlePerLine - 1);
