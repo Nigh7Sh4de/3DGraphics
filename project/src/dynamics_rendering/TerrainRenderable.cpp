@@ -2,7 +2,7 @@
 #include "../../include/gl_helper.hpp"
 #include "../../include/log.hpp"
 
-#include <glm/gtc/matrix_transform.hpp>
+// #include <glm/gtc/matrix_scaleform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 #include <iostream>
@@ -15,11 +15,11 @@ TerrainRenderable::~TerrainRenderable()
     glcheck(glDeleteBuffers(1, &m_nBuffer));
 }
 
-float calculateTerrainHeight(int x, int y) {
-  return (x*x / 4.0) + ((y-0.5)*(y-0.5) / 8.0); //P[x][y]
+float TerrainRenderable::calculateTerrainHeight(int x, int y) {
+  return ((x*x / 4.0) + ((y-0.5)*(y-0.5) / 8.0) - 0.95) * glm::log(detail_s) ; //P[x][y]
 }
 
-glm::vec3 calculateTerrainNormal(int x, int y) {
+glm::vec3 TerrainRenderable::calculateTerrainNormal(int x, int y) {
   return glm::normalize(glm::vec3((x / 2.0), ((y-0.5) / 4.0), 1)); //P[x][y]
 }
 
@@ -27,83 +27,68 @@ TerrainRenderable::TerrainRenderable(ShaderProgramPtr shaderProgram) :
     HierarchicalRenderable(shaderProgram),
     m_pBuffer(0), m_cBuffer(0), m_nBuffer(0)
 {
-    int scale = 20;
-    for (int i=0;i<111-3;i+=6) {
+
+    // std::cout<<"Using detail (d,v,g,t) "<<detail<<", "<<detail_v<<", "<<detail_g<<", "<<detail_t<<std::endl;
+    int i=0;
+    for (i=0;i<detail_v*3-3;i+=6) {
       int p = i/6;
       int x1 = 0;
       int x2 = 0;
       int y1 = 0;
       int y2 = 0;
-      if (p%9<5) {
-        x1 = x2 = p % 9;
-        y1 = (p/9)*2;
-        y2 = (p/9)*2+1;
+      if (p%detail_g<detail) {
+        // std::cout<<"GOING RIGHT"<<std::endl;
+        x1 = x2 = p % detail_g;
+        y1 = (p/detail_g)*2;
+        y2 = (p/detail_g)*2+1;
       }
       else {
-        x1 = 9 - (p%9);
-        x2 = 9 - (p%9) - 1;
-        y1 = (p/9)*2+2;
-        y2 = (p/9)*2+1;
+        // std::cout<<"GOING LEFT"<<std::endl;
+        x1 = detail_g - (p%detail_g);
+        x2 = detail_g - (p%detail_g) - 1;
+        y1 = (p/detail_g)*2+2;
+        y2 = (p/detail_g)*2+1;
       }
-      x1 -= 2;
-      y1 -= 2;
-      x2 -= 2;
-      y2 -= 2;
-      float z1 = calculateTerrainHeight(x1, y1) - 1; //P[x][y]
-      float z2 = calculateTerrainHeight(x2, y2) - 1; //P[x][y]
-      std::cout<<"Building vertices"<<p*2<<": "<<x1<<" "<<y1<<" "<<z1<<std::endl;
-      std::cout<<"Building vertices"<<p*2<<" scaled: "<<x1*scale<<" "<<y1*scale<<" "<<z1*scale<<std::endl;
-      m_positions[i] = scale * (x1);
-      m_positions[i+1] = scale * (y1);
-      m_positions[i+2] = scale * (z1);
-      std::cout<<"Building vertices"<<p*2+1<<" "<<x2<<" "<<y2<<" "<<z2<<std::endl;
-      m_positions[i+3] = scale * (x2);
-      m_positions[i+4] = scale * (y2);
-      m_positions[i+5] = scale * (z2);
+      x1 -= detail_t;
+      y1 -= detail_t;
+      x2 -= detail_t;
+      y2 -= detail_t;
+      // std::cout<<"Building vertices"<<p*2<<": "<<x1<<" "<<y1<<" "<<z1<<std::endl;
+      // std::cout<<"Building vertices"<<p*2<<" scaled: "<<x1*detail_s<<" "<<y1*detail_s<<" "<<z1*detail_s<<std::endl;
+      m_positions[i] = detail_s * (x1);
+      m_positions[i+1] = detail_s * (y1);
+      m_positions[i+2] = calculateTerrainHeight(x1, y1);
+      // std::cout<<"Building vertices"<<p*2+1<<" "<<x2<<" "<<y2<<" "<<z2<<std::endl;
+      m_positions[i+3] = detail_s * (x2);
+      m_positions[i+4] = detail_s * (y2);
+      m_positions[i+5] = calculateTerrainHeight(x2, y2);;
     }
-    std::cout<<"Building vertices"<<19<<"* "<<0<<" "<<4<<" "<<1<<std::endl;
-    m_positions[108] = scale * -2;
-    m_positions[109] = scale * 2;
-    m_positions[110] = scale * (calculateTerrainHeight(-2, 2));
-    // m_positions = {
-    //   -10, -10, 0,
-    //   0, -10, 0,
-    //   0, 0, 0
-    // };
-    // m_positions.push_back(p4);
-    //
-    // glm::vec3 normal(0, 1, 0);
-    for (int i=0;i<111;i+=3) {
+    // std::cout<<"Building vertices"<<19<<"* "<<0<<" "<<4<<" "<<1<<std::endl;
+    m_positions[i] = detail_s * -(detail_t);
+    m_positions[i+1] = detail_s * (detail_t);
+    m_positions[i+2] = calculateTerrainHeight(-detail_t, detail_t);
+
+    for (i=0;i<detail_v*3;i+=3) {
       glm::vec3 normal = calculateTerrainNormal(m_positions[i], m_positions[i+1]);
       m_normals[i] = normal.x;
       m_normals[i+1] = normal.y;
       m_normals[i+2] = normal.z;
     }
-    // m_normals.push_back(normal);
-    // m_normals.push_back(normal);
-    // m_normals.push_back(normal);
-    // m_normals.push_back(normal);
-    // m_normals.push_back(normal);
-    //
-    for (int i=0, j=0;i<148;i+=4,j+=3) {
+
+    int j;
+    for (i=0, j=0;i<detail_v*4;i+=4,j+=3) {
       // std::cout<<"Building color "<<i<<" "<<0<<" "<<255-i<<" "<<1<<std::endl;
       float z = m_positions[j+2];
       float color = 0;
       if (z > 0) {
-        color = z / scale;
+        color = z / detail_s;
       }
-      std::cout<<"Building color at "<<z<<std::endl;
-      m_colors[i] = 1.2*color;
-      m_colors[i+1] = 1.1*color;
+      // std::cout<<"Building color at "<<z<<std::endl;
+      m_colors[i] = 1.05*color;
+      m_colors[i+1] = 1.01*color;
       m_colors[i+2] = color;
       m_colors[i+3] = 1;
     }
-    // m_colors.push_back(color);
-    // m_colors.push_back(color);
-    // m_colors.push_back(color);
-    // m_colors.push_back(color);
-    // m_colors.push_back(color);
-    // m_colors.push_back(color);
 
     //Create buffers
     glGenBuffers(1, &m_pBuffer); //vertices
@@ -150,7 +135,7 @@ void TerrainRenderable::do_draw()
     }
 
     //Draw triangles elements
-    glcheck(glDrawArrays(GL_TRIANGLE_STRIP,0, 37));
+    glcheck(glDrawArrays(GL_TRIANGLE_STRIP,0, detail_v));
 
     if (positionLocation != ShaderProgram::null_location) {
         glcheck(glDisableVertexAttribArray(positionLocation));

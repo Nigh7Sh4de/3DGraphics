@@ -18,9 +18,19 @@ private:
     void do_draw();
     void do_animate(float time);
 
-    float m_positions[111];
-    float m_normals[111];
-    float m_colors[148];
+    float calculateTerrainHeight(int x, int y);
+    glm::vec3 calculateTerrainNormal(int x, int y);
+
+    static const int detail = 15;
+    static const int detail_v = (detail*2-1)*(detail-1)+1;
+    static const int detail_g = detail*2-1;
+    static const int detail_t = detail/2;
+    static const int detail_s = 8;
+
+
+    float m_positions[detail_v*3];
+    float m_normals[detail_v*3];
+    float m_colors[detail_v*4];
     // std::vector<glm::vec3> m_positions;
     // std::vector<glm::vec4> m_colors;
     // std::vector<glm::vec3> m_normals;
