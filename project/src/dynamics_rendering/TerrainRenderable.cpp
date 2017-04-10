@@ -16,7 +16,7 @@ TerrainRenderable::~TerrainRenderable()
 }
 
 float TerrainRenderable::calculateTerrainHeight(int x, int y) {
-  return ((x*x / 4.0) + ((y-0.5)*(y-0.5) / 8.0) - 0.95) * glm::log(detail_s) ; //P[x][y]
+  return ((x*x / 4.0) + ((y-0.5)*(y-0.5) / 8.0) - 2.0) * glm::log(detail_s) ; //P[x][y]
 }
 
 glm::vec3 TerrainRenderable::calculateTerrainNormal(int x, int y) {
@@ -81,9 +81,10 @@ TerrainRenderable::TerrainRenderable(ShaderProgramPtr shaderProgram) :
       float z = m_positions[j+2];
       float color = 0;
       if (z > 0) {
-        color = z / detail_s;
+        color = z / glm::log(detail_s) * 0.1;
       }
-      // std::cout<<"Building color at "<<z<<std::endl;
+
+      // std::cout<<"Building color at "<<z<<" "<<color<<std::endl;
       m_colors[i] = 1.05*color;
       m_colors[i+1] = 1.01*color;
       m_colors[i+2] = color;

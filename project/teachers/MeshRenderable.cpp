@@ -46,6 +46,7 @@ teachers::MeshRenderable::~MeshRenderable()
 
 void teachers::MeshRenderable::do_draw()
 {
+    // std::cout<<"DRAWING!!!"<<std::endl;
     int positionLocation = m_shaderProgram->getAttributeLocation("vPosition");
     int colorLocation = m_shaderProgram->getAttributeLocation("vColor");
     int normalLocation = m_shaderProgram->getAttributeLocation("vNormal");
