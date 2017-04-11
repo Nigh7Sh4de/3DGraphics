@@ -22,6 +22,7 @@
 #include "../include/dynamics_rendering/PuckRenderable.hpp"
 #include "../include/dynamics_rendering/TerrainRenderable.hpp"
 #include "../include/dynamics_rendering/BearRenderable.hpp"
+#include "../include/dynamics_rendering/SnowFallRenderable.hpp"
 #include "../teachers/CylinderRenderable.hpp"
 #include "../include/texturing/TexturedPlaneRenderable.hpp"
 #include "../include/keyframes/KeyframedCylinderRenderable.hpp"
@@ -34,6 +35,7 @@ void project_character(Viewer &viewer, ShaderProgramPtr &shader);
 void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_hockey_stick(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_puck(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
+void project_snowfall(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ConstantForceFieldPtr gravityForceField, ShaderProgramPtr &shader);
 void project_spring_gate(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 
 void initialize_project_scene(Viewer &viewer)
@@ -95,11 +97,19 @@ void initialize_project_scene(Viewer &viewer)
     ConstantForceFieldPtr gravityForceField = std::make_shared<ConstantForceField>(system->getParticles(), glm::vec3{0, 0, -10});
     system->addForceField(gravityForceField);
 
+    project_snowfall(viewer, system, systemRenderable, gravityForceField, flatShader);
+
     // rotate the whole scene so its aligned with skybox
     systemRenderable->setParentTransform(glm::rotate(glm::mat4(1.0), (float)(M_PI / 2.0), glm::vec3(1.0, 0.0, 0.0)));
 
     //Finally, run the animation
     viewer.startAnimation();
+}
+
+void project_snowfall(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ConstantForceFieldPtr gravityForceField, ShaderProgramPtr &shader)
+{
+    SnowFallRenderablePtr snowfall = std::make_shared<SnowFallRenderable>(shader, system, systemRenderable, gravityForceField);
+    HierarchicalRenderable::addChild(systemRenderable, snowfall);
 }
 
 void project_terrain(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)
