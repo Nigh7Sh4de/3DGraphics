@@ -142,32 +142,10 @@ void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRendera
 }
 
 void project_character(Viewer &viewer, ShaderProgramPtr &shader) {
-      // std::shared_ptr<teachers::MeshRenderable> characterMesh
-      //     = std::make_shared<teachers::MeshRenderable>(shader, "../meshes/bear.obj");
       BearRenderablePtr bear = std::make_shared<BearRenderable>(shader);
       viewer.addRenderable(bear);
       bear->setModelMatrix( glm::translate(glm::mat4(1.0), glm::vec3(0.0, -5.0, 3.0)));
       bear->setParentTransform(glm::scale(glm::mat4(1.0), glm::vec3(0.3, -0.3, -0.3)));
-
-      // sf::Event event;
-      // while (m_window.pollEvent(event) {
-      //   if (event.type === sf::Event::KeyPressed) {
-      //     switch(event.key.code) {
-      //       case sf::Keyboard::Left:
-      //           characterMesh->setModelMatrix( glm::translate(glm::mat4(1.0), glm::vec3(1.0, 0.0, 0.0)));
-      //         break;
-      //       case sf::Keyboard::Right:
-      //
-      //         break;
-      //       case sf::Keyboard::Down:
-      //
-      //         break;
-      //       case sf::Keyboard::Up:
-      //
-      //         break;
-      //     }
-      //   }
-      // })
 }
 
 void project_snowman(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader)

@@ -16,6 +16,15 @@ public:
 
 private:
     void do_keyPressedEvent(sf::Event &e);
+    void do_keyReleasedEvent(sf::Event &e);
+    void do_animate(float time);
+
+    float speed = 100.0;
+    float _time = 0.0;
+    bool forwards = false;
+    bool backwards = false;
+    bool left = false;
+    bool right = false;
 };
 
 typedef std::shared_ptr<BearRenderable> BearRenderablePtr;
