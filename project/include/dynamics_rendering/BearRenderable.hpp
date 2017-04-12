@@ -19,7 +19,7 @@ private:
     void do_keyReleasedEvent(sf::Event &e);
     void do_animate(float dTime, float time);
 
-    float speed = 100.0;
+    float speed = 200.0;
     bool forwards = false;
     bool backwards = false;
     bool left = false;

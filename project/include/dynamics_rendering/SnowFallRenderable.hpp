@@ -25,7 +25,7 @@ private:
     void do_draw();
     void do_animate(float dTime, float time);
 
-    const float frequency = 0.1;
+    const float frequency = 0.01;
     float next = 0.0;
     DynamicSystemPtr system;
     DynamicSystemRenderablePtr systemRenderable;

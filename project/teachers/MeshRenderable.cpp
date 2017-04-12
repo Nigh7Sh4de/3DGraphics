@@ -12,8 +12,6 @@ teachers::MeshRenderable::MeshRenderable(ShaderProgramPtr shaderProgram, const s
     HierarchicalRenderable(shaderProgram),
     m_pBuffer(0), m_cBuffer(0), m_nBuffer(0), m_iBuffer(0)
 {
-    std::cerr << "Hey, teacher, leave them kids alone! -- Mesh" << std::endl;
-
     read_obj(filename, m_positions, m_indices, m_normals, m_texCoords);
     m_colors.resize(m_positions.size());
     for(unsigned int i = 0; i < m_colors.size(); ++i)

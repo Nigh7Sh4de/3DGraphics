@@ -11,8 +11,6 @@ teachers::IndexedCubeRenderable::IndexedCubeRenderable(ShaderProgramPtr shaderPr
   : HierarchicalRenderable(shaderProgram),
     m_pBuffer(0), m_cBuffer(0), m_nBuffer(0), m_iBuffer(0)
 {
-    std::cerr << "Hey, teacher, leave them kids alone! -- Indexed cube" << std::endl;
-
     // 8 vertices
     m_positions.push_back(glm::vec3(-0.5, -0.5, -0.5));
     m_positions.push_back(glm::vec3(0.5, -0.5, -0.5));
