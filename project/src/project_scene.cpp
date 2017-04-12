@@ -28,6 +28,8 @@
 #include "../include/keyframes/KeyframedCylinderRenderable.hpp"
 #include "../include/keyframes/GeometricTransformation.hpp"
 
+#include "../include/lighting/SpotLightRenderable.hpp"
+
 void project_terrain(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_skybox(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
 void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable, ShaderProgramPtr &shader);
@@ -75,11 +77,75 @@ void initialize_project_scene(Viewer &viewer)
         glm::lookAt(glm::vec3(0, -20, 20), glm::vec3(0, 0, 0), glm::vec3(0, -1, 0)));
 
     // Define a directional light for the whole scene
-    glm::vec3 lightDirection = glm::normalize(glm::vec3(0.0, 1.0, 0.0));
-    glm::vec3 ghostWhite(248.0 / 255, 248.0 / 255, 1.0);
+    glm::vec3 lightDirection = glm::normalize(glm::vec3(0.0, 0.5, 1.0));
+//    glm::vec3 ghostWhite(248.0 / 255, 248.0 / 255, 1.0);
+    glm::vec3 ghostWhite(0.8, 0.8, 0.8);
     DirectionalLightPtr directionalLight =
         std::make_shared<DirectionalLight>(lightDirection, ghostWhite, ghostWhite, ghostWhite);
     viewer.setDirectionalLight(directionalLight);
+
+
+//GABRIEL
+
+
+    //Define a transformation
+    glm::mat4 parentTransformation, localTransformation;
+
+    //Define a spot light 1 - RED
+    glm::vec3 s_position(-10.0,-7.0,0.0), s_spotDirection = glm::normalize(glm::vec3(0.0,1.0,0.0)); // posicao da lampada e direcao dela
+    //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
+    glm::vec3 s_ambient(1.5,0.8,0.8), s_diffuse(1.5,0.2,0.2), s_specular(1.5,0.0,0.0);
+    float s_constant=1.0, s_linear=0.1, s_quadratic=0.0;
+    float s_cosInnerCutOff = std::cos(glm::radians(20.0f)); // tava é 20 rad
+    float s_cosOuterCutOff = std::cos(glm::radians(40.0f)); // tava 40 rad
+    SpotLightPtr spotLight = std::make_shared<SpotLight>(s_position, s_spotDirection,
+                                                         s_ambient, s_diffuse, s_specular,
+                                                         s_constant, s_linear, s_quadratic,
+                                                         s_cosInnerCutOff, s_cosOuterCutOff);
+    SpotLightRenderablePtr spotLightRenderable = std::make_shared<SpotLightRenderable>(flatShader, spotLight);
+    localTransformation = glm::scale(glm::mat4(1.0), glm::vec3(1.0,1.0,1.0));
+    spotLightRenderable->setLocalTransform(localTransformation);
+    viewer.addSpotLight(spotLight);
+    //viewer.addRenderable(spotLightRenderable);
+
+
+
+    //Define a spot light 2 - GREEN
+    glm::vec3 s_position2(10.0,-7.0,0.0), s_spotDirection2 = glm::normalize(glm::vec3(0.0,1.0,0.0)); // posicao da lampada e direcao dela
+    //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
+    glm::vec3 s_ambient2(0.8,1.5,0.8), s_diffuse2(0.2,1.5,0.2), s_specular2(0.0,1.5,0.0);
+    float s_constant2=1.0, s_linear2=0.1, s_quadratic2=0.0;
+    float s_cosInnerCutOff2 = std::cos(glm::radians(10.0f)); // tava é 20 rad
+    float s_cosOuterCutOff2 = std::cos(glm::radians(20.0f)); // tava 40 rad
+    SpotLightPtr spotLight2 = std::make_shared<SpotLight>(s_position2, s_spotDirection2,
+                                                         s_ambient2, s_diffuse2, s_specular2,
+                                                         s_constant2, s_linear2, s_quadratic2,
+                                                         s_cosInnerCutOff2, s_cosOuterCutOff2);
+    SpotLightRenderablePtr spotLightRenderable2 = std::make_shared<SpotLightRenderable>(flatShader, spotLight2);
+    localTransformation = glm::scale(glm::mat4(1.0), glm::vec3(1.0,1.0,1.0));
+    spotLightRenderable2->setLocalTransform(localTransformation);
+    viewer.addSpotLight(spotLight2);
+    //viewer.addRenderable(spotLightRenderable2); // show the cone or not
+
+    //Define a spot light 3 - BLUE
+    glm::vec3 s_position3(0.0,-7.0,0.0), s_spotDirection3 = glm::normalize(glm::vec3(0.0,1.0,0.0)); // posicao da lampada e direcao dela
+    //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
+    glm::vec3 s_ambient3(0.8,0.8,1.5), s_diffuse3(0.2,0.2,1.5), s_specular3(0.0,0.0,1.5);
+    float s_constant3=1.0, s_linear3=0.1, s_quadratic3=0.0;
+    float s_cosInnerCutOff3 = std::cos(glm::radians(10.0f)); // tava é 20 rad
+    float s_cosOuterCutOff3 = std::cos(glm::radians(20.0f)); // tava 40 rad
+    SpotLightPtr spotLight3 = std::make_shared<SpotLight>(s_position3, s_spotDirection3,
+                                                         s_ambient3, s_diffuse3, s_specular3,
+                                                         s_constant3, s_linear3, s_quadratic3,
+                                                         s_cosInnerCutOff3, s_cosOuterCutOff3);
+    SpotLightRenderablePtr spotLightRenderable3 = std::make_shared<SpotLightRenderable>(flatShader, spotLight3);
+    localTransformation = glm::scale(glm::mat4(1.0), glm::vec3(1.0,1.0,1.0));
+    spotLightRenderable3->setLocalTransform(localTransformation);
+    viewer.addSpotLight(spotLight3);
+    //viewer.addRenderable(spotLightRenderable3); // show the cone or not
+
+
+//GABRIEL
 
     //Populate the dynamic system with particles, forcefields
     //and create renderables associated to them for visualization.

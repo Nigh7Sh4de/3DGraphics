@@ -115,13 +115,23 @@ bool Material::sendToGPU(const ShaderProgramPtr& program, const MaterialPtr &mat
 MaterialPtr Material::White()
 {
     float openGLFactor=128.0;
-    glm::vec3 ambient(0.1, 0.1, 0.1);
-    glm::vec3 diffuse(1.0, 1.0, 1.0);
-    glm::vec3 specular(0.1, 0.1, 0.1);
-    float shininess = openGLFactor*0.088;
+    glm::vec3 ambient(0.25, 0.25, 0.25);
+    glm::vec3 diffuse(0.4, 0.4, 0.4);
+    glm::vec3 specular(0.774597, 0.774597, 0.774597);
+    float shininess = openGLFactor*0.6;
     return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
 
+
+MaterialPtr Material::Silver()
+{
+    float openGLFactor=128.0;
+    glm::vec3 ambient(0.19225,0.19225, 0.19225);
+    glm::vec3 diffuse(0.50754, 0.50754, 0.50754);
+    glm::vec3 specular(0.508273, 0.508273, 0.508273);
+    float shininess = openGLFactor*0.4;
+    return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
 MaterialPtr Material::Pearl()
 {
     float openGLFactor=128.0;

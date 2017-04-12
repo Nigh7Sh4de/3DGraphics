@@ -117,13 +117,16 @@ public:
      */
     static bool sendToGPU(const ShaderProgramPtr& program, const MaterialPtr& material);
 
-    static MaterialPtr White();
+    static MaterialPtr White(); //MATERIAL MADE BY THE GROUP
+    static MaterialPtr Silver();//MATERIAL MADE BY THE GROUP
 
     /**
      * @brief Construct a pearl material from real data according to http://devernay.free.fr/cours/opengl/materials.html
      * @return A pearl material.
      */
     static MaterialPtr Pearl();
+
+
 
     /**
      * @brief Construct a emerald material from real data according to http://devernay.free.fr/cours/opengl/materials.html
