@@ -115,6 +115,6 @@ void SpringListRenderable::do_draw()
     }
 }
 
-void SpringListRenderable::do_animate(float time)
+void SpringListRenderable::do_animate(float dTime, float time)
 {
 }

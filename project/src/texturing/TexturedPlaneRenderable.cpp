@@ -138,7 +138,7 @@ void TexturedPlaneRenderable::do_draw()
     }
 }
 
-void TexturedPlaneRenderable::do_animate(float time)
+void TexturedPlaneRenderable::do_animate(float dTime, float time)
 {
 }
 

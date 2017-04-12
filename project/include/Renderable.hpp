@@ -35,7 +35,7 @@ class Viewer;
  *
  * This class is an interface we need to implement to create 3D objects. In
  * particular, we must define the pure virtual member functions do_draw() and
- * do_animate( float time ). The Viewer class can handle any non abstract derived
+ * do_animate( float dTime, float time ). The Viewer class can handle any non abstract derived
  * class to display it for you, animate it or to send interaction events to it.
  *
  * If you want the Viewer managing your renderables to automatically set the view
@@ -154,12 +154,12 @@ public:
 
     /** \brief Animate this renderable.
      *
-     * This function calls the private pure virtual function <tt> do_animate(time) </tt>
+     * This function calls the private pure virtual function <tt> do_animate(dTime, time) </tt>
      * (guidelines #1 and #2). The simulation time equals zero when the animation is
      * started (see Viewer::startAnimation()).
      * \param time Current simulation time.
      */
-    virtual void animate( float time );
+    virtual void animate( float dTime, float time );
 
     /**
      * \brief Handle a key pressed event.
@@ -223,7 +223,7 @@ private:
      * Implementation to animate this renderable.
      * \param time The current simulation time.
      */
-    virtual void do_animate( float time ) = 0;
+    virtual void do_animate( float dTime, float time ) = 0;
     /**
      * \brief Handle a key pressed event.
      *
@@ -291,14 +291,14 @@ private:
      * do_animate() of the concrete renderable class.
      * @param time The current simulation time.
      */
-    virtual void beforeAnimate( float time );
+    virtual void beforeAnimate( float dTime, float time );
     /**@brief Perform operation after animating a renderable.
      *
      * Override this function to perform additional operations after calling
      * do_animate() of the concrete renderable class.
      * @param time The current simulation time.
      */
-    virtual void afterAnimate( float time );
+    virtual void afterAnimate( float dTime, float time );
 
     Viewer* getViewer() const;
 

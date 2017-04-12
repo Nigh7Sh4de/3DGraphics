@@ -83,7 +83,7 @@ void ParticleListRenderable::do_draw()
     }
 }
 
-void ParticleListRenderable::do_animate(float time)
+void ParticleListRenderable::do_animate(float dTime, float time)
 {
 }
 

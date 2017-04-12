@@ -28,7 +28,7 @@ void KeyframedCylinderRenderable::addLocalTransformKeyframe(float time, const Ge
     m_localKeyframes.add(time, transformation);
 }
 
-void KeyframedCylinderRenderable::do_animate(float time)
+void KeyframedCylinderRenderable::do_animate(float dTime, float time)
 {
     //Assign the interpolated transformations from the keyframes to the local/parent transformations.
     if (!m_localKeyframes.empty()) {

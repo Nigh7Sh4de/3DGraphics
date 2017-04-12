@@ -32,6 +32,6 @@ void LightedCubeRenderable::do_draw()
     }
 }
 
-void LightedCubeRenderable::do_animate(float time)
+void LightedCubeRenderable::do_animate(float dTime, float time)
 {
 }

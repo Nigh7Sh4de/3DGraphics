@@ -166,8 +166,9 @@ void Viewer::animate()
             resetAnimation();
 
         for(RenderablePtr r : m_renderables)
-            r->animate( getTime() );
+            r->animate( getTime() - lastFrameTime, getTime() );
 
+        lastFrameTime = getTime();
         m_camera.animate( getTime() );
     }
 }

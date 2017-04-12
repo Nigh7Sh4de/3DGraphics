@@ -20,10 +20,8 @@ BearRenderable::BearRenderable(ShaderProgramPtr shaderProgram) :
 }
 
 
-void BearRenderable::do_animate(float time)
+void BearRenderable::do_animate(float dTime, float time)
 {
-    float dTime = time - _time;
-    _time = time;
     if (left || right || forwards || backwards)
       for (int i=0;i<m_positions.size();i++) {
         if (left)

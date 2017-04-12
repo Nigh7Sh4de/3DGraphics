@@ -175,6 +175,6 @@ void teachers::CubeRenderable::do_draw()
     }
 }
 
-void teachers::CubeRenderable::do_animate(float time)
+void teachers::CubeRenderable::do_animate(float dTime, float time)
 {
 }

@@ -109,7 +109,7 @@ void ControlledForceFieldRenderable::do_keyReleasedEvent(sf::Event& e)
     }
 }
 
-void ControlledForceFieldRenderable::do_animate(float time)
+void ControlledForceFieldRenderable::do_animate(float dTime, float time)
 {
     if (time > m_status.last_time) {
         float dt = time - m_status.last_time;

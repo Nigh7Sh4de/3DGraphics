@@ -14,7 +14,7 @@ class Skybox : public HierarchicalRenderable
 
     private:
         void do_draw();
-        void do_animate(float time);
+        void do_animate(float dTime, float time);
 
         GLuint skyboxVAO, skyboxVBO;
         

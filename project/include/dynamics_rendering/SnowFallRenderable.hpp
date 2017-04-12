@@ -23,14 +23,18 @@ private:
     void spawnSnow();
 
     void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 
-    const float frequency = 1.0;
+    const float frequency = 0.1;
     float next = 0.0;
     DynamicSystemPtr system;
     DynamicSystemRenderablePtr systemRenderable;
     ShaderProgramPtr shader;
     ConstantForceFieldPtr gravityForceField;
+
+    const float duration = 1.0;
+    std::vector<float> timers;
+    std::vector<PuckRenderablePtr> snowflakes;
 };
 
 typedef std::shared_ptr<SnowFallRenderable> SnowFallRenderablePtr;

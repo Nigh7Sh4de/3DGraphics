@@ -102,5 +102,5 @@ void QuadRenderable::do_draw()
     }
 }
 
-void QuadRenderable::do_animate(float time)
+void QuadRenderable::do_animate(float dTime, float time)
 {}

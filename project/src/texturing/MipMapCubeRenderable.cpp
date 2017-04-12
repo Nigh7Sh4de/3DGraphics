@@ -151,7 +151,7 @@ void MipMapCubeRenderable::do_draw()
     }
 }
 
-void MipMapCubeRenderable::do_animate(float time)
+void MipMapCubeRenderable::do_animate(float dTime, float time)
 {
 
 }

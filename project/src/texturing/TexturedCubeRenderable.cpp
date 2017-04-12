@@ -138,7 +138,7 @@ void TexturedCubeRenderable::do_draw()
     }
 }
 
-void TexturedCubeRenderable::do_animate(float time)
+void TexturedCubeRenderable::do_animate(float dTime, float time)
 {
 
 }

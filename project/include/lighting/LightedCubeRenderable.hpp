@@ -12,7 +12,7 @@ public:
 
 protected:
     void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 };
 
 typedef std::shared_ptr<LightedCubeRenderable> LightedCubeRenderablePtr;

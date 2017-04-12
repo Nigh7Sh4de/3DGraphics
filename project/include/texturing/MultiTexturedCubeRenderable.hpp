@@ -18,7 +18,7 @@ public :
 
 private:
     void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 
     std::vector< glm::vec3 > m_positions;
     std::vector< glm::vec3 > m_normals;

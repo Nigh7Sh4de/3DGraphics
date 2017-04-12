@@ -96,5 +96,5 @@ void SpringForceFieldRenderable::do_draw()
     }
 }
 
-void SpringForceFieldRenderable::do_animate(float time)
+void SpringForceFieldRenderable::do_animate(float dTime, float time)
 {}

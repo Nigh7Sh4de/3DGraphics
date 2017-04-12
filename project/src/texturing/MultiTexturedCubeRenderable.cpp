@@ -206,7 +206,7 @@ void MultiTexturedCubeRenderable::do_draw()
 
 }
 
-void MultiTexturedCubeRenderable::do_animate(float time)
+void MultiTexturedCubeRenderable::do_animate(float dTime, float time)
 {
     m_blendingCoefficient = std::sin(time);
 }

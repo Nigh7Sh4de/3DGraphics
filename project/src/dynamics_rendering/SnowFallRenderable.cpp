@@ -32,14 +32,30 @@ void SnowFallRenderable::spawnSnow() {
     PuckRenderablePtr puckRenderable = std::make_shared<PuckRenderable>(shader, snowParticle, true, 30, glm::vec4(0.9));
     HierarchicalRenderable::addChild(systemRenderable, puckRenderable);
     gravityForceField->setParticles(system->getParticles());
+
+    timers.push_back(0);
+    snowflakes.push_back(puckRenderable);
 }
 
 void SnowFallRenderable::do_draw()
 {
 }
 
-void SnowFallRenderable::do_animate(float time)
+void SnowFallRenderable::do_animate(float dTime, float time)
 {
+  for (int i=0;i<snowflakes.size();i++) {
+    timers[i] += dTime;
+    if (timers[i] > duration) {
+      PuckRenderablePtr s = snowflakes[i];
+      ParticlePtr p = s->getParticle();
+      systemRenderable->removeChild(s);
+      system->removeParticle(p);
+      gravityForceField->setParticles(system->getParticles());
+      snowflakes.erase(snowflakes.begin()+i);
+      timers.erase(timers.begin()+i);
+    }
+  }
+
   next += time;
   if (next > frequency) {
     next = 0;

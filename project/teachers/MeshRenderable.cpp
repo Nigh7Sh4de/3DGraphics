@@ -91,6 +91,6 @@ void teachers::MeshRenderable::do_draw()
     }
 }
 
-void teachers::MeshRenderable::do_animate(float time)
+void teachers::MeshRenderable::do_animate(float dTime, float time)
 {
 }

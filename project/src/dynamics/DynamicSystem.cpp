@@ -72,6 +72,17 @@ void DynamicSystem::addParticle(ParticlePtr p)
     m_particles.push_back(p);
 }
 
+ParticlePtr DynamicSystem::removeParticle(ParticlePtr p)
+{
+    for (int i=0;i<m_particles.size();i++) {
+      if (m_particles[i] == p) {
+        m_particles.erase(m_particles.begin()+i);
+        return p;
+      }
+    }
+    return nullptr;
+}
+
 void DynamicSystem::addForceField(ForceFieldPtr forceField)
 {
     m_forceFields.push_back(forceField);

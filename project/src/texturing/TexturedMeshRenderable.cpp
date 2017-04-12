@@ -144,7 +144,7 @@ void TexturedMeshRenderable::do_draw()
     }
 }
 
-void TexturedMeshRenderable::do_animate(float time)
+void TexturedMeshRenderable::do_animate(float dTime, float time)
 {
 }
 

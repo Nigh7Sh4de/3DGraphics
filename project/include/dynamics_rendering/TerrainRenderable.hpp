@@ -16,7 +16,7 @@ public:
 
 private:
     void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 
     float calculateTerrainHeight(int x, int y);
     glm::vec3 calculateTerrainNormal(int x, int y);

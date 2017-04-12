@@ -88,6 +88,10 @@ public:
      * @param p The particle to add to this system.
      */
     void addParticle(ParticlePtr p);
+
+    ParticlePtr removeParticle(ParticlePtr p);
+
+
     /**@brief Add a force field to the system.
      *
      * Add a force field to this dynamic system to influence particles.

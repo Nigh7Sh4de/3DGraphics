@@ -149,5 +149,5 @@ void TerrainRenderable::do_draw()
     }
 }
 
-void TerrainRenderable::do_animate(float time)
+void TerrainRenderable::do_animate(float dTime, float time)
 {}

@@ -88,6 +88,6 @@ void SphereRenderable::do_draw()
     }
 }
 
-void SphereRenderable::do_animate(float time)
+void SphereRenderable::do_animate(float dTime, float time)
 {
 }

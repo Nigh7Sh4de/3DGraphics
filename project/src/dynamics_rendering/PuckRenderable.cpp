@@ -14,6 +14,10 @@ PuckRenderable::PuckRenderable(ShaderProgramPtr shaderProgram, ParticlePtr parti
     : CylinderRenderable(shaderProgram, normalPerVertex, nbSlices, color),
       m_particle(particle) {}
 
+ParticlePtr PuckRenderable::getParticle() {
+  return m_particle;
+}
+
 void PuckRenderable::do_draw()
 {
     //Update the parent and local transform matrix to position the geometric data according to the particle's data.
@@ -26,7 +30,7 @@ void PuckRenderable::do_draw()
     CylinderRenderable::do_draw();
 }
 
-void PuckRenderable::do_animate(float time)
+void PuckRenderable::do_animate(float dTime, float time)
 {
     if (time < 2) {
         m_particle->restart();

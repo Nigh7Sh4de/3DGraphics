@@ -55,11 +55,11 @@ private:
 
     /**@brief Animate this renderable.
      *
-     * The implementation of the animate( float time ) or Renderable. This does
+     * The implementation of the animate( float dTime, float time ) or Renderable. This does
      * nothing as we do not need to animate it.
      * @param time The current simulation time.
      */
-    void do_animate( float time );
+    void do_animate( float dTime, float time );
 
 
     /**@brief Initialize the vertex attributes of the frame.

@@ -230,7 +230,7 @@ void RayCanvas::do_draw()
     }
 }
 
-void RayCanvas::do_animate(float time)
+void RayCanvas::do_animate(float dTime, float time)
 {
     //m_animTime = time;
 }

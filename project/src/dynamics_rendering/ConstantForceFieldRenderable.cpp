@@ -107,7 +107,7 @@ void ConstantForceFieldRenderable::do_draw()
     }
 }
 
-void ConstantForceFieldRenderable::do_animate(float time)
+void ConstantForceFieldRenderable::do_animate(float dTime, float time)
 {}
 
 ConstantForceFieldRenderable::~ConstantForceFieldRenderable()

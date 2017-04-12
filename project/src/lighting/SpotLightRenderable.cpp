@@ -98,7 +98,7 @@ void SpotLightRenderable::do_draw()
     }
 }
 
-void SpotLightRenderable::do_animate(float /*time*/) {}
+void SpotLightRenderable::do_animate(float dTime, float time) {}
 
 SpotLightRenderable::~SpotLightRenderable()
 {

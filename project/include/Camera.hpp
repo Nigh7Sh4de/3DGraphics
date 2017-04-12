@@ -58,7 +58,7 @@ public:
      * behavior here. This function is automatically called by the Viewer
      * @param time Current simulation time.
      */
-    void animate( float time );
+    void animate( float dTime );
 
     /**
      * @name Camera View Matrix

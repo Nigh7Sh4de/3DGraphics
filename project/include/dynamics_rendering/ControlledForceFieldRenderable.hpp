@@ -65,7 +65,7 @@ private:
 
   virtual void do_keyPressedEvent(sf::Event& e);
   virtual void do_keyReleasedEvent(sf::Event& e);
-  virtual void do_animate(float time);
+  virtual void do_animate(float dTime, float time);
   virtual void do_draw();
 
   ControlledForceFieldStatus m_status;

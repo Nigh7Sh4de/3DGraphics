@@ -35,7 +35,7 @@ public:
 
 protected:
     // void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 
 private:
     KeyframeCollection m_localKeyframes; /*!< A collection of keyframes for the local transformation of renderable. */

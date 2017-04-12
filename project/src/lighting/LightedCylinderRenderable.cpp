@@ -33,6 +33,6 @@ void LightedCylinderRenderable::do_draw()
     }
 }
 
-void LightedCylinderRenderable::do_animate( float time )
+void LightedCylinderRenderable::do_animate( float dTime, float time )
 {
 }

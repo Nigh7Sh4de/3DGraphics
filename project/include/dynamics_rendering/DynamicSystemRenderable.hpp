@@ -47,7 +47,7 @@ private:
      * than m_sytem->m_dt ago. This allows us to update the dynamic system
      * at the specified time interval.
      */
-    void do_animate( float time );
+    void do_animate( float dTime, float time );
 
     /**@brief Handle key pressed.
      *

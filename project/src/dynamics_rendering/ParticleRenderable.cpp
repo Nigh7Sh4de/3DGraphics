@@ -154,5 +154,5 @@ void ParticleRenderable::do_draw()
     }
 }
 
-void ParticleRenderable::do_animate(float time)
+void ParticleRenderable::do_animate(float dTime, float time)
 {}

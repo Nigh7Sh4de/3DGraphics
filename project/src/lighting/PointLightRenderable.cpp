@@ -93,7 +93,7 @@ void PointLightRenderable::do_draw()
     }
 }
 
-void PointLightRenderable::do_animate(float /*time*/) {}
+void PointLightRenderable::do_animate(float, float /*time*/) {}
 
 PointLightRenderable::~PointLightRenderable()
 {

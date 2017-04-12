@@ -33,6 +33,6 @@ void LightedMeshRenderable::do_draw()
     }
 }
 
-void LightedMeshRenderable::do_animate(float time)
+void LightedMeshRenderable::do_animate(float dTime, float time)
 {
 }

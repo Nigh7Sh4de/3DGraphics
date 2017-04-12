@@ -103,5 +103,5 @@ void FrameRenderable::do_draw()
     glcheck(glLineWidth(1.0f));
 }
 
-void FrameRenderable::do_animate(float time)
+void FrameRenderable::do_animate(float dTime, float time)
 {}

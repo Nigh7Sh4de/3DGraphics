@@ -100,7 +100,7 @@ void teachers::CylinderRenderable::do_draw()
     }
 }
 
-void teachers::CylinderRenderable::do_animate(float time)
+void teachers::CylinderRenderable::do_animate(float dTime, float time)
 {
 }
 

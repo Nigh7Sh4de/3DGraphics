@@ -108,18 +108,29 @@ void HierarchicalRenderable::afterDraw()
 
 }
 
-void HierarchicalRenderable::afterAnimate(float time)
+void HierarchicalRenderable::afterAnimate(float dTime, float time)
 {
     //After the instance has been animated using do_animate,
     //we loop over its children and animate them
     for (size_t i=0; i<m_children.size(); ++i)
-        m_children[i]->animate(time);
+        m_children[i]->animate(dTime, time);
 }
 
 void HierarchicalRenderable::addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child)
 {
     child->m_parent = parent;
     parent->m_children.push_back(child);
+}
+
+HierarchicalRenderablePtr HierarchicalRenderable::removeChild(HierarchicalRenderablePtr child) {
+  // std::vector<HierarchicalRenderablePtr> &children = parent->getChildren();
+  for (int i=0;i<m_children.size();i++) {
+    if (m_children[i] == child) {
+      m_children.erase(m_children.begin()+i);
+      return child;
+    }
+  }
+  return nullptr;
 }
 
 std::vector<HierarchicalRenderablePtr> & HierarchicalRenderable::getChildren()

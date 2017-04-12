@@ -87,6 +87,9 @@ public :
     static void addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child);
 
 
+    HierarchicalRenderablePtr removeChild(HierarchicalRenderablePtr child);
+
+
     /**@brief Access to the children of this renderable.
      *
      * Get the children of this hierarchical renderable.
@@ -202,7 +205,7 @@ private:
     /**
      * \brief Perform computations after do_animate()
      */
-    virtual void afterAnimate( float time );
+    virtual void afterAnimate( float dTime, float time );
 
 };
 typedef std::shared_ptr<HierarchicalRenderable> HierarchicalRenderablePtr;

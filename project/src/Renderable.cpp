@@ -40,11 +40,11 @@ void Renderable::draw()
     afterDraw();
 }
 
-void Renderable::animate(float time)
+void Renderable::animate(float dTime, float time)
 {
-    beforeAnimate(time);
-    do_animate(time);
-    afterAnimate(time);
+    beforeAnimate(dTime, time);
+    do_animate(dTime, time);
+    afterAnimate(dTime, time);
 }
 
 void Renderable::keyPressedEvent(sf::Event& e)
@@ -118,10 +118,10 @@ void Renderable::beforeDraw()
 void Renderable::afterDraw()
 {}
 
-void Renderable::beforeAnimate(float time)
+void Renderable::beforeAnimate(float dTime, float time)
 {}
 
-void Renderable::afterAnimate(float time)
+void Renderable::afterAnimate(float dTime, float time)
 {}
 
 ShaderProgramPtr Renderable::getShaderProgram() const
@@ -138,4 +138,3 @@ void Renderable::displayTextInViewer(std::string text) const
 {
     getViewer()->displayText(text);
 }
-

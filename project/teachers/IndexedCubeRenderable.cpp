@@ -119,7 +119,7 @@ void teachers::IndexedCubeRenderable::do_draw()
     }
 }
 
-void teachers::IndexedCubeRenderable::do_animate(float time)
+void teachers::IndexedCubeRenderable::do_animate(float dTime, float time)
 {
 }
 

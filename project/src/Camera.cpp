@@ -18,7 +18,7 @@ Camera::~Camera()
 
 }
 
-void Camera::animate(float time)
+void Camera::animate(float dTime)
 {
 }
 

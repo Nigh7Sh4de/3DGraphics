@@ -26,9 +26,11 @@ class PuckRenderable : public teachers::CylinderRenderable
 
     ~PuckRenderable();
 
+    ParticlePtr getParticle();
+
   private:
     void do_draw();
-    void do_animate(float time);
+    void do_animate(float dTime, float time);
 
     ParticlePtr m_particle;
     float animTime;

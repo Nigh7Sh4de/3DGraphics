@@ -294,6 +294,8 @@ private:
     FPSCounter m_fpsCounter; /*!< A framerate counter */
     bool m_helpDisplayed;
 
+    float lastFrameTime = 0;
+
     /**@brief Hold important state of the keyboard.
      *
      * This class holds some state of the keyboard to be used to control

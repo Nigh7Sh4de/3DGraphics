@@ -15,7 +15,7 @@ class MeshRenderable : public HierarchicalRenderable
 
     protected:
         void do_draw();
-        void do_animate(float time);
+        void do_animate(float dTime, float time);
 
     protected:
         std::vector<glm::vec3> m_positions;

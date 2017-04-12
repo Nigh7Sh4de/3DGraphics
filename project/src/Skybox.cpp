@@ -126,8 +126,8 @@ void Skybox::do_draw()
     glDepthMask(GL_FALSE); // Remember to turn depth writing off
     // skybox cube
     glBindVertexArray(skyboxVAO);
-    
-    int texSamplerLocation = m_shaderProgram->getUniformLocation("skybox");    
+
+    int texSamplerLocation = m_shaderProgram->getUniformLocation("skybox");
 
     if (texSamplerLocation != ShaderProgram::null_location)
     {
@@ -149,6 +149,6 @@ void Skybox::do_draw()
     }
 }
 
-void Skybox::do_animate(float time)
+void Skybox::do_animate(float dTime, float time)
 {
 }
