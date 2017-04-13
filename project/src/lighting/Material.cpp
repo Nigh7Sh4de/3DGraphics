@@ -111,7 +111,7 @@ bool Material::sendToGPU(const ShaderProgramPtr& program, const MaterialPtr &mat
 
     return success;
 }
-
+//custom made material
 MaterialPtr Material::White()
 {
     float openGLFactor=128.0;
@@ -122,7 +122,7 @@ MaterialPtr Material::White()
     return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
 
-
+//custom made material
 MaterialPtr Material::Silver()
 {
     float openGLFactor=128.0;

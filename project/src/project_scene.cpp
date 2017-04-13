@@ -76,19 +76,16 @@ void initialize_project_scene(Viewer &viewer)
     viewer.getCamera().setViewMatrix(
         glm::lookAt(glm::vec3(0, -20, 20), glm::vec3(0, 0, 0), glm::vec3(0, -1, 0)));
 
-    // Define a directional light for the whole scene
+    // Define a directional light for the whole scene - WE MADE IT DARKER
     glm::vec3 lightDirection = glm::normalize(glm::vec3(0.0, 1.0, 0.0));
-//    glm::vec3 ghostWhite(248.0 / 255, 248.0 / 255, 1.0);
+    // glm::vec3 ghostWhite(248.0 / 255, 248.0 / 255, 1.0);
     glm::vec3 ghostWhite(0.3, 0.3, 0.3);
     DirectionalLightPtr directionalLight =
         std::make_shared<DirectionalLight>(lightDirection, ghostWhite, ghostWhite, ghostWhite);
     viewer.setDirectionalLight(directionalLight);
 
 
-//GABRIEL
-
-
-    //Define a transformation
+    //Define a transformation and 3 spotlights over the lake
     glm::mat4 parentTransformation, localTransformation;
 
     //Define a spot light 1 - RED
@@ -96,26 +93,26 @@ void initialize_project_scene(Viewer &viewer)
     //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
     glm::vec3 s_ambient(1.5,0.8,0.8), s_diffuse(1.5,0.2,0.2), s_specular(1.5,0.0,0.0);
     float s_constant=1.0, s_linear=0.1, s_quadratic=0.0;
-    float s_cosInnerCutOff = std::cos(glm::radians(20.0f)); // tava é 20 rad
-    float s_cosOuterCutOff = std::cos(glm::radians(40.0f)); // tava 40 rad
+    float s_cosInnerCutOff = std::cos(glm::radians(20.0f)); 
+    float s_cosOuterCutOff = std::cos(glm::radians(40.0f)); 
 
     //Define a spot light 2 - GREEN
     glm::vec3 s_position2(15.0,-7.0,0.0), s_spotDirection2 = glm::normalize(glm::vec3(0.0,1.0,0.0)); // posicao da lampada e direcao dela
     //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
     glm::vec3 s_ambient2(0.8,1.5,0.8), s_diffuse2(0.2,1.5,0.2), s_specular2(0.0,1.5,0.0);
     float s_constant2=1.0, s_linear2=0.1, s_quadratic2=0.0;
-    float s_cosInnerCutOff2 = std::cos(glm::radians(10.0f)); // tava é 20 rad
-    float s_cosOuterCutOff2 = std::cos(glm::radians(20.0f)); // tava 40 rad
+    float s_cosInnerCutOff2 = std::cos(glm::radians(10.0f)); 
+    float s_cosOuterCutOff2 = std::cos(glm::radians(20.0f)); 
 
     //Define a spot light 3 - BLUE
     glm::vec3 s_position3(0.0,-7.0,0.0), s_spotDirection3 = glm::normalize(glm::vec3(0.0,1.0,0.0)); // posicao da lampada e direcao dela
     //glm::vec3 s_ambient(0.0,0.0,0.0), s_diffuse(0.0,0.0,0.0), s_specular(0.0,0.0,0.0);
     glm::vec3 s_ambient3(0.8,0.8,1.5), s_diffuse3(0.2,0.2,1.5), s_specular3(0.0,0.0,1.5);
     float s_constant3=1.0, s_linear3=0.1, s_quadratic3=0.0;
-    float s_cosInnerCutOff3 = std::cos(glm::radians(10.0f)); // tava 20 rad
-    float s_cosOuterCutOff3 = std::cos(glm::radians(20.0f)); // tava 40 rad
+    float s_cosInnerCutOff3 = std::cos(glm::radians(10.0f)); 
+    float s_cosOuterCutOff3 = std::cos(glm::radians(20.0f));
 
-    //ACTUALLY DECLARE AND CREATE SPOTLIGHTS
+    //ACTUALLY DECLARE and CREATE SPOTLIGHTS
     localTransformation = glm::scale(glm::mat4(1.0), glm::vec3(1.0,1.0,1.0));
 
 
@@ -147,10 +144,6 @@ void initialize_project_scene(Viewer &viewer)
     viewer.addSpotLight(spotLight3);
     //viewer.addRenderable(spotLightRenderable3); // show the cone or not
 
-
-
-
-//GABRIEL
 
     //Populate the dynamic system with particles, forcefields
     //and create renderables associated to them for visualization.
@@ -218,7 +211,7 @@ void project_lake(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRendera
     std::string filename = "../textures/ice_lake.jpg";
     TexturedPlaneRenderablePtr texPlane = std::make_shared<TexturedPlaneRenderable>(shader, filename);
     texPlane->setParentTransform(glm::scale(glm::mat4(2.0), glm::vec3(40.0, 30.0, 30.0)));
-    texPlane->setMaterial(Material::White());
+    texPlane->setMaterial(Material::White()); //custom material created by the group
     HierarchicalRenderable::addChild(systemRenderable, texPlane);
 }
 
